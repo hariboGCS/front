@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.listContainer {
+  padding: 16px 24px;
+  transition: all 0.25s ease-in-out;
+  margin: 4px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: #F5F5F6;
+    cursor: pointer;
+  }
+
+  .title {
+    font-family: "Noto Sans KR", sans-serif;
+    color: #666666;
+    font-weight: 500;
+    margin-left:10px;
+  }
+}
