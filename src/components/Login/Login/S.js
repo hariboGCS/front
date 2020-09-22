@@ -45,6 +45,21 @@ export const LoginStyle = styled.div`
                 background-color: #3f88c5;
             }
         }
+        .teacherWrapper {
+            width: 90px;
+            height: 30px;
+            margin: 10px;
+            padding-top: 6px;
+            border-radius: 10px;
+            background-color: #99999a;
+            text-align: center;
+            font-weight: 500;
+            color: white;
+        }
+        .teacher {
+            background-color: #3f88c5;
+            color: white;
+        }
         .inputBox {
             height: 36px;
             width: 305px;

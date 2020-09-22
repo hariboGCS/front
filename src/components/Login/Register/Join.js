@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RegisterStyle } from './S'
 import useInput from '../useInput'
+import { RegisterApi } from '../../../apis/apis'
 
 function Register() {
     const [{ name, email, password }, onChange, reset] = useInput({
@@ -9,16 +10,18 @@ function Register() {
         email: '',
         password: '',
     })
+    const [is_teacher, setTeacher] = useState(false)
     const handleRegister = () => {
         const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
-        const pw_regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
+        const pw_regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,12}$/
         if (name.length !== 0 && email.length !== 0 && password.length !== 0) {
-            if (email.test(regExp) != null) {
-                if (password.test(pw_regExp) != null) {
+            if (email.match(regExp) != null) {
+                if (password.match(pw_regExp) != null) {
                     //Axios 사용해서 회원가입 연동
+                    RegisterApi(name, email, password, is_teacher)
                     console.log('success')
                 } else {
-                    alert('비밀번호는 8 ~ 10자, 영문 숫자 조합입니다')
+                    alert('비밀번호는 8 ~ 12자, 영문 숫자 조합입니다')
                     reset()
                 }
             } else {
@@ -29,7 +32,9 @@ function Register() {
             alert('모두 입력해주십시오')
         }
     }
-
+    const onChangeTeacher = () => {
+        setTeacher(!is_teacher)
+    }
     return (
         <RegisterStyle>
             <div className="loginContainer">
@@ -41,6 +46,14 @@ function Register() {
                         </div>
                         <div className="loginRectangleBox">
                             <div className="loginRectangle"></div>
+                        </div>
+                        <div
+                            onClick={onChangeTeacher}
+                            className={`teacherWrapper ${
+                                is_teacher && 'teacher'
+                            }`}
+                        >
+                            {is_teacher ? '선생님' : '학생'}
                         </div>
                         <div className="inputContent">
                             <input

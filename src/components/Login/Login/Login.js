@@ -1,28 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LoginStyle } from './S'
 import useInput from '../useInput'
+import { UseUserDispatch, UseUserState } from '../../../Context/Context'
+import { loginHandler } from '../../../Redux/Actions/UserAction'
 
-const Login = () => {
+const Login = ({ history }) => {
     const [{ email, password }, onChange, reset] = useInput({
         email: '',
         password: '',
     })
+    const [is_teacher, setTeacher] = useState(false)
+    const dispatch = UseUserDispatch()
+    const state = UseUserState()
     const handleLogin = () => {
         const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
-        var pw_regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
-        if (email.test(regExp) != null) {
-            if (password.test(pw_regExp) != null) {
+        const pw_regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,12}$/
+        if (email.match(regExp) != null) {
+            if (password.match(pw_regExp) != null) {
                 //Axios 사용해서 로그인 연동
-                console.log('success')
+                dispatch(loginHandler(email, password, is_teacher))
+                console.log('state' + state)
+                history.push('/DashBoard')
+                reset()
             } else {
-                alert('비밀번호는 8 ~ 10자, 영문 숫자 조합입니다')
+                alert('비밀번호는 8 ~ 12자, 영문 숫자 조합입니다')
                 reset()
             }
         } else {
             alert('이메일의 형식이 맞지 않습니다')
             reset()
         }
+    }
+    const onChangeTeacher = () => {
+        setTeacher(!is_teacher)
     }
     return (
         <LoginStyle>
@@ -35,6 +46,14 @@ const Login = () => {
                         </div>
                         <div className="loginRectangleBox">
                             <div className="loginRectangle"></div>
+                        </div>
+                        <div
+                            onClick={onChangeTeacher}
+                            className={`teacherWrapper ${
+                                is_teacher && 'teacher'
+                            }`}
+                        >
+                            {is_teacher ? '선생님' : '학생'}
                         </div>
                         <div className="inputContent">
                             <input
@@ -65,7 +84,7 @@ const Login = () => {
                         <div className="joinUs">
                             <span>아직 계정이 없나요?</span>
                             <Link to="/Register">
-                                <sapn className="joinText">회원가입</sapn>
+                                <span className="joinText">회원가입</span>
                             </Link>
                         </div>
                     </div>
