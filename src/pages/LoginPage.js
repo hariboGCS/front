@@ -1,10 +1,10 @@
 import React from 'react'
 import Login from '../components/Login/Login/Login'
 
-const LoginPage = () => {
+const LoginPage = ({ history }) => {
     return (
         <div>
-            <Login />
+            <Login history={history} />
         </div>
     )
 }
